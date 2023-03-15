@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contacts-operations';
+import { addContact } from 'redux/contacts-operations';
 
 import { Formik, Form, ErrorMessage } from 'formik';
 

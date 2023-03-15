@@ -1,52 +1,52 @@
+import { useEffect, lazy } from 'react';
+import { useDispatch } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+import { Layout } from 'components/Layout';
+import { PrivateRoute } from 'components/PrivateRoute';
+import { RestrictedRoute } from 'components/RestrictedRoute';
+import { refreshUser } from 'redux/auth/operations';
+import { useAuth } from 'components/hooks/useAuth';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { ContactsTitle, Container, FilterTitle, Title } from './App.styled';
+const HomePage = lazy(() => import("../../pages/home"))
+const RegisterPage = lazy(() => import("../../pages/register"))
+const ContactsPage = lazy(() => import("../../pages/contacts"))
+const LoginPage = lazy(() => import("../../pages/login"))
 
-import ContactForm from 'components/ContactForm';
-import ContactList from 'components/ContactList';
-import Filter from 'components/Filter';
-import { fetchAllContacts } from 'redux/contacts-operations';
-import { selectContacts, selectIsLoading, selectError } from 'redux/selectors';
-
-
-// export const getFilteredContacts = ({ contacts, filter }) => {
-//   if (!filter) {
-//       return contacts;
-//   }
-//   const normalizedFilter = filter.toLowerCase();
-//   const result = contacts.contacts.filter(({ name }) => {
-//       return (name.toLocaleLowerCase().includes(normalizedFilter))
-//   })
-//   return result;
-// }
-
-const App = () => {
-  const contacts = useSelector(selectContacts);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+export const App = () => {
   const dispatch = useDispatch();
+  const { isRefreshing } = useAuth();
 
   useEffect(() => {
-    dispatch(fetchAllContacts());
+    dispatch(refreshUser());
   }, [dispatch]);
-//onub
 
-  return (
-    <Container>
-      <Title>Phonebook</Title>
-      <ContactForm />
-      <ContactsTitle>Contacts</ContactsTitle>
-      <FilterTitle>Find contacts by name</FilterTitle>
-      <Filter />
-      {isLoading && !error && <p>Loading...🚀</p>}
-      {contacts.length ? (
-        <ContactList />
-      ) : (
-        <p>No contacts yet</p>
-      )}
-    </Container>
+  return isRefreshing ? (
+    <b>Refreshing user...</b>
+  ) : (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<RegisterPage />} />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<LoginPage />} />
+          }
+        />
+        <Route
+          path="/contacts"
+          element={
+            <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
+          }
+          />
+      </Route>
+    </Routes>
   );
-}
+};
 
-export default App;
+

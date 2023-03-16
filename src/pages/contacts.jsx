@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useEffect } from 'react';
 import { fetchAllContacts } from 'redux/contacts-operations';
+import { Container } from 'components/App/App.styled';
 
 import ContactList from 'components/PhoneBook/ContactList';
 import ContactForm from 'components/PhoneBook/ContactForm';
@@ -19,7 +20,7 @@ export default function Contacts() {
 
     return (
         <HelmetProvider>
-            <div>
+            <Container>
                 <Helmet>
                     <title>Your tasks</title>
                 </Helmet>
@@ -29,7 +30,7 @@ export default function Contacts() {
                 <Filter />
                 {isLoading && !error && <b>Request in progress...</b>}
                 <ContactList />
-            </div>
+            </Container>
         </HelmetProvider>
     );
 }

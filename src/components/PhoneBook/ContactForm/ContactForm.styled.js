@@ -1,6 +1,17 @@
 import styled from '@emotion/styled';
 import { Field } from 'formik';
 
+export const Container = styled.div`
+  margin: 0 auto;
+  margin-top: 30px;
+  padding: 20px 20px;
+  width: 500px;
+  text-align: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 3px solid #333340;
+`;
+
 export const Label = styled.label`
   margin: 5px;
   display: flex;

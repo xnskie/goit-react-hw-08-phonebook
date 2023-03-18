@@ -12,11 +12,13 @@ function ContactForm () {
 
   const dispatch = useDispatch();
 
-  const [name] = useState('');
-  const [number] = useState('');
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
 const handleAddContact = contact => {
   dispatch(addContact(contact));
+  setName('');
+  setNumber('');
 }
 
 

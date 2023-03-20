@@ -15,9 +15,18 @@ function ContactForm () {
   const [name] = useState('');
   const [number] = useState('');
 
-const handleAddContact = (e, contact) => {
+const handleAddContact = e => {
   e.preventDefault();
-  dispatch(addContact(contact));
+
+  const inputName = e.currentTarget.name.value;
+  const inputNumber = e.currentTarget.number.value;
+
+  const data = {
+    name: inputName,
+    number: inputNumber,
+  };
+  dispatch(addContact(data));
+  
   e.currentTarget.reset();
 }
 
